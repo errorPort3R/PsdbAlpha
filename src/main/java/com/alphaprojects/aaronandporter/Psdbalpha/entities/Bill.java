@@ -57,6 +57,20 @@ public class Bill
     {
     }
 
+    public Bill(String referenceNumber, String name, Date dateSubmitted, Date dateUpForVote, ArrayList<String> creators, String body, String synopsis, String region, Level level, ArrayList<Amendment> amendments)
+    {
+        this.referenceNumber = referenceNumber;
+        this.name = name;
+        this.dateSubmitted = dateSubmitted;
+        this.dateUpForVote = dateUpForVote;
+        this.creators = creators;
+        this.body = body;
+        this.synopsis = synopsis;
+        this.region = region;
+        this.level = level;
+        this.amendments = amendments;
+    }
+
     public Bill(int id, String referenceNumber, String name, Date dateSubmitted, Date dateUpForVote, ArrayList<String> creators, String body, String synopsis, String region, Level level, ArrayList<Amendment> amendments)
     {
         this.id = id;
