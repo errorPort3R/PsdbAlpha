@@ -55,6 +55,10 @@ public class Politician
     @Enumerated(EnumType.ORDINAL)
     private Level level;
 
+    public Politician()
+    {
+    }
+
     public Politician(String name, String profilePictureLocation, String partyAffiliation, boolean currentlyHoldingOffice, String position, ArrayList<String> previousPositions, int age, int yearsInPolitics, HashMap<String, Boolean> votingRecord, String region, Level level)
     {
         this.name = name;
