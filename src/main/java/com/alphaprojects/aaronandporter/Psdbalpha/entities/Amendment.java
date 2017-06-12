@@ -30,6 +30,14 @@ public class Amendment
     {
     }
 
+    public Amendment(String title, String body, String synopsis, ArrayList<String> creators)
+    {
+        this.title = title;
+        this.body = body;
+        this.synopsis = synopsis;
+        this.creators = creators;
+    }
+
     public Amendment(int id, String title, String body, String synopsis, ArrayList<String> creators)
     {
         this.id = id;

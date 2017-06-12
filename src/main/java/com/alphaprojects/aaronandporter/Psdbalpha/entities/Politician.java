@@ -74,6 +74,22 @@ public class Politician
         this.level = level;
     }
 
+    public Politician(int id, String name, String profilePictureLocation, String partyAffiliation, boolean currentlyHoldingOffice, String position, ArrayList<String> previousPositions, int age, int yearsInPolitics, HashMap<String, Boolean> votingRecord, String region, Level level)
+    {
+        this.id = id;
+        this.name = name;
+        this.profilePictureLocation = profilePictureLocation;
+        this.partyAffiliation = partyAffiliation;
+        this.currentlyHoldingOffice = currentlyHoldingOffice;
+        this.position = position;
+        this.previousPositions = previousPositions;
+        this.age = age;
+        this.yearsInPolitics = yearsInPolitics;
+        this.votingRecord = votingRecord;
+        this.region = region;
+        this.level = level;
+    }
+
     public int getId()
     {
         return id;

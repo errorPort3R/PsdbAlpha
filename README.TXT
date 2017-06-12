@@ -122,6 +122,7 @@ User
     //               Politicians Routes
     //
     //***************************************************************************************
+
     path = ROOT_URL/politicians      GET
         Takes a Level and Region.
         Returns all Politician that meet the Region and Level.
