@@ -1,16 +1,17 @@
 package com.alphaprojects.aaronandporter.Psdbalpha.controllers;
 
-import com.alphaprojects.aaronandporter.Psdbalpha.entities.Amendment;
-import com.alphaprojects.aaronandporter.Psdbalpha.entities.Bill;
-import com.alphaprojects.aaronandporter.Psdbalpha.entities.Politician;
+import com.alphaprojects.aaronandporter.Psdbalpha.entities.*;
 import com.alphaprojects.aaronandporter.Psdbalpha.services.BillRepository;
 import com.alphaprojects.aaronandporter.Psdbalpha.services.PoliticianRepository;
+import com.alphaprojects.aaronandporter.Psdbalpha.services.UserRepository;
+import com.alphaprojects.aaronandporter.Psdbalpha.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +27,9 @@ public class PSDBController
 
     @Autowired
     PoliticianRepository politicians;
+
+    @Autowired
+    UserRepository users;
 
     //***************************************************************************************
     //
@@ -126,4 +130,91 @@ public class PSDBController
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
+
+    //***************************************************************************************
+    //
+    //             USER ROUTES
+    //
+    //***************************************************************************************
+
+    //action for account creation page
+    //checks that entered username is not already taken and creates account if it's valid
+    @RequestMapping(path = "/account-create", method = RequestMethod.POST)
+    public String createAccount(HttpSession session, String username, String password, Address address, String facebookId) throws PasswordStorage.CannotPerformOperationException
+    {
+        User user = users.findByUsername(username);
+        if (user != null) {
+            System.err.printf("User Already Exists!");
+            return "redirect:/";
+        }
+        else {
+            HashMap<Integer, Boolean> pollingAnswers = null;
+            user = new User(username, PasswordStorage.createHash(password), address, facebookId, pollingAnswers);
+            users.save(user);
+            session.setAttribute("username", username);
+            return "redirect:/";
+        }
+    }
+
+    //allows you to change your username.  not implemented as yet.
+    @RequestMapping(path = "/account-update", method = RequestMethod.POST)
+    public String editAccount(HttpSession session, String password, String newUsername, String newPassword) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            throw new Exception("Not logged in.");
+        }
+        User user = users.findByUsername(username);
+        if (!PasswordStorage.verifyPassword(password, user.getPassword())) {
+            throw new Exception("Wrong password.");
+        }
+        user.setUsername(newUsername);
+        user.setPassword(PasswordStorage.createHash(newPassword));
+        users.save(user);
+        return "redirect:/user-profile";
+    }
+
+    //deletes a user account and all affiliated items/messages.  not implemented yet.
+    @RequestMapping(path = "/account-delete", method = RequestMethod.POST)
+    public String deleteAccount(HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            throw new Exception("Not logged in.");
+        }
+        User user = users.findByUsername(username);
+        //items.delete(items.findByUser(user));
+        //works.delete(works.findByUser(user));
+        //photos.delete(photos.findByUser(user));
+        //messages.delete(messages.findByAuthor(user));
+        //messages.delete(messages.findByRecipient(user));
+        users.delete(user.getId());
+        return "redirect:/";
+    }
+
+    //Login route that keeps you on the same page you're on.
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public String login(HttpSession session, String username, String password, HttpServletRequest request) throws Exception {
+        User userFromDB = users.findByUsername(username);
+        if (userFromDB == null)
+        {
+            return "redirect:/account-create";
+        }
+        else if (!PasswordStorage.verifyPassword(password, userFromDB.getPassword()))
+        {
+            throw new Exception("Wrong password.");
+        }
+        session.setAttribute("username", username);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
+    }
+
+    //logout route sends you back to home
+    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+
+
 }
