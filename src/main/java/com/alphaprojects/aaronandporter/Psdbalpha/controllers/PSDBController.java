@@ -181,11 +181,9 @@ public class PSDBController
             throw new Exception("Not logged in.");
         }
         User user = users.findByUsername(username);
-        //items.delete(items.findByUser(user));
-        //works.delete(works.findByUser(user));
-        //photos.delete(photos.findByUser(user));
-        //messages.delete(messages.findByAuthor(user));
-        //messages.delete(messages.findByRecipient(user));
+        //delete associated objects here
+
+        //delete user
         users.delete(user.getId());
         return "redirect:/";
     }

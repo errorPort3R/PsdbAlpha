@@ -36,7 +36,7 @@ public class Politician
     @Column(nullable = false)
     private String position;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private ArrayList<String> previousPositions;
 
     @Column(nullable = false)
@@ -44,6 +44,12 @@ public class Politician
 
     @Column(nullable = false)
     private int yearsInPolitics;
+
+    @Column(nullable = true)
+    private String biography;
+
+    @Column(nullable = true)
+    private String criminalHistory;
 
     @Column(nullable = false)
     private HashMap<String, Boolean> votingRecord;
@@ -59,22 +65,7 @@ public class Politician
     {
     }
 
-    public Politician(String name, String profilePictureLocation, String partyAffiliation, boolean currentlyHoldingOffice, String position, ArrayList<String> previousPositions, int age, int yearsInPolitics, HashMap<String, Boolean> votingRecord, String region, Level level)
-    {
-        this.name = name;
-        this.profilePictureLocation = profilePictureLocation;
-        this.partyAffiliation = partyAffiliation;
-        this.currentlyHoldingOffice = currentlyHoldingOffice;
-        this.position = position;
-        this.previousPositions = previousPositions;
-        this.age = age;
-        this.yearsInPolitics = yearsInPolitics;
-        this.votingRecord = votingRecord;
-        this.region = region;
-        this.level = level;
-    }
-
-    public Politician(int id, String name, String profilePictureLocation, String partyAffiliation, boolean currentlyHoldingOffice, String position, ArrayList<String> previousPositions, int age, int yearsInPolitics, HashMap<String, Boolean> votingRecord, String region, Level level)
+    public Politician(int id, String name, String profilePictureLocation, String partyAffiliation, boolean currentlyHoldingOffice, String position, ArrayList<String> previousPositions, int age, int yearsInPolitics, String region, Level level)
     {
         this.id = id;
         this.name = name;
@@ -85,19 +76,8 @@ public class Politician
         this.previousPositions = previousPositions;
         this.age = age;
         this.yearsInPolitics = yearsInPolitics;
-        this.votingRecord = votingRecord;
         this.region = region;
         this.level = level;
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
     }
 
     public String getName()
@@ -180,6 +160,26 @@ public class Politician
         this.yearsInPolitics = yearsInPolitics;
     }
 
+    public String getBiography()
+    {
+        return biography;
+    }
+
+    public void setBiography(String biography)
+    {
+        this.biography = biography;
+    }
+
+    public String getCriminalHistory()
+    {
+        return criminalHistory;
+    }
+
+    public void setCriminalHistory(String criminalHistory)
+    {
+        this.criminalHistory = criminalHistory;
+    }
+
     public HashMap<String, Boolean> getVotingRecord()
     {
         return votingRecord;
@@ -190,16 +190,6 @@ public class Politician
         this.votingRecord = votingRecord;
     }
 
-    public Level getLevel()
-    {
-        return level;
-    }
-
-    public void setLevel(Level level)
-    {
-        this.level = level;
-    }
-
     public String getRegion()
     {
         return region;
@@ -208,5 +198,15 @@ public class Politician
     public void setRegion(String region)
     {
         this.region = region;
+    }
+
+    public Level getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel(Level level)
+    {
+        this.level = level;
     }
 }
